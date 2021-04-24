@@ -20,8 +20,14 @@ void execute_lui(Instruction, Processor *);
 
 void execute_instruction(Instruction instruction,Processor *processor,Byte *memory) {
   /* YOUR CODE HERE: COMPLETE THE SWITCH STATEMENTS */
-  switch(0) { // What do we switch on?
+  (*processor).PC+=4; //  Aumentamos el valor del pc en bytes para asegurar que apunte a 
+                      // La siguiente instruccion que se ejecutara despues de la actual.
+          
+  unsigned int opcode = instruccion.opcode; //Obtenemos el opcode de la instruccion.
+
+  switch(opcode) { // What do we switch on?
     /* YOUR CODE HERE */
+
     default: // undefined opcode
       handle_invalid_instruction(instruction);
       exit(-1);
@@ -31,8 +37,28 @@ void execute_instruction(Instruction instruction,Processor *processor,Byte *memo
 
 
 void execute_rtype(Instruction instruction, Processor *processor) {
-  switch(0) { // What do we switch on?
+  unsigned int function7 = instruction.rtype.funct7; //Encontramos el Funct7 para diferenciar casos posibles
+
+  unsigned int rd = instruction.rtype.rd; //Encontramos el registro destino (posicion)
+  unsigned int rs1 = instruction.rtype.rs1 // Encontramos el primer registro (posicion)
+  unsigned int rs2 = instruction.rtype.rs2 //Encontramos el segundo regisro (posicion)
+
+  switch(function7) { // What do we switch on?
     /* YOUR CODE HERE */
+
+    case 0:
+      switch(instruction.rtype.funct3){
+        case 0:
+          (*processor).R[rd] = (sWord)(*processor).R[rs1] + (sWord)(*processor).R[rs2]; //Realizamos la suma entre los valores contenidos 
+          break;
+
+          default:
+          handle_invalid_instruction(instruction);
+          break;
+
+      
+
+      } break;
     default:
       handle_invalid_instruction(instruction);
       exit(-1);
