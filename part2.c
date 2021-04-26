@@ -76,7 +76,7 @@ void execute_rtype(Instruction instruction, Processor *processor) {
   unsigned int rs2 = instruction.rtype.rs2; //Encontramos el segundo regisro (posicion)
 
   switch (function3){
-    case 0x0:
+    case 0x00:
       switch(function7){
         case 0x00:
           int add1 = processor->R[rs1];
@@ -102,7 +102,7 @@ void execute_rtype(Instruction instruction, Processor *processor) {
           break;
       }
 
-    case 0x1:
+    case 0x01:
       switch(function7){
         case 0x00:
           unsigned int sft1 = processor->R[rs1];
@@ -121,7 +121,7 @@ void execute_rtype(Instruction instruction, Processor *processor) {
           exit(0);
           break;
       }
-    case 0x2:
+    case 0x02:
       int slt1 = processor->R[rs1];
       int slt2 = processor->R[rs2];
       if(slt1 < slt2){
@@ -131,7 +131,7 @@ void execute_rtype(Instruction instruction, Processor *processor) {
       }
       break;
     
-    case 0x4:
+    case 0x04:
       switch (function7){
         case 0x00:
           unsigned int xor1 = processor->R[rs1];
@@ -151,7 +151,7 @@ void execute_rtype(Instruction instruction, Processor *processor) {
           break;
       }
     
-    case 0x5:
+    case 0x05:
       switch(function7){
         case 0x00:
           unsigned int srl1 = processor->R[rs1];
@@ -172,7 +172,7 @@ void execute_rtype(Instruction instruction, Processor *processor) {
 
       }
     
-    case 0x6:
+    case 0x06:
       switch(function7){
         case 0x00:
           unsigned int or1 = processor->R[rs1];
@@ -186,7 +186,7 @@ void execute_rtype(Instruction instruction, Processor *processor) {
           break;
       }
 
-    case 0x7:
+    case 0x07:
       unsigned int and1 = processor->[rs1];
       unsigned int and2 = processor->[rs2];
       processor->R[rd] = and1 & and2;
@@ -208,19 +208,19 @@ void execute_itype_except_load(Instruction instruction, Processor *processor) {
 
   switch(function3) { // What do we switch on?
         /* YOUR CODE HERE */
-    case 0x0:
+    case 0x00:
       int addi1 = processor->R[rs1];
       int addi2 = bitSigner(imm, 12);
       processor->R[rd] = addi1 + addi2;
       break;
 
-    case 0x1:
+    case 0x01:
       unsigned int slli1 = processor->R[rs1];
       int slli2 = imm;
       processor->R[rd] = slli1 << slli2;
       break;
 
-    case 0x2:
+    case 0x02:
       int slti1 = processor->R[rs1];
       int slti2 = bitSigner(imm, 12);
       if (slti1 < slti2) {
@@ -230,13 +230,13 @@ void execute_itype_except_load(Instruction instruction, Processor *processor) {
       }
       break;
 
-    case 0x4:
+    case 0x04:
       unsigned int xori1 = processor->R[rs1];
       unsigned int xori2 = bitSigner(imm, 12);
       processor->R[rd] = xori1 ^ xori2;
       break;
 
-    case 0x5:
+    case 0x05:
       switch(imm >> 5) {
 
         case 0x00:
@@ -257,13 +257,13 @@ void execute_itype_except_load(Instruction instruction, Processor *processor) {
           break;
       }
 
-    case 0x6:
+    case 0x06:
       unsigned int ori1 = processor->R[rs1];
       unsigned int ori2 = bitSigner(imm, 12);
       processor->R[rd] = ori1 | ori2;
       break;
 
-    case 0x7:
+    case 0x07:
       unsigned int andi1 = processor->R[rs1];
       unsigned int andi2 = bitSigner(imm, 12);
       processor->R[rd] = andi1 & andi2;
@@ -303,14 +303,14 @@ void execute_branch(Instruction instruction, Processor *processor) {
     /* Remember that the immediate portion of branches
        is counting half-words, so make sure to account for that. */
     switch(instruction.sbtype.funct3) { // What do we switch on?
-        case 0x0:
+        case 0x00:
           if (eq1 == eq2) {
             processor->PC = branchaddr;
           } else {
             processor->PC += 4;
           }
           break;
-        case 0x1:
+        case 0x01:
           if (eq1 != eq2) {
             processor->PC = branchaddr;
           } else {
@@ -332,13 +332,13 @@ void execute_load(Instruction instruction, Processor *processor, Byte *memory) {
 
   switch(instruction.itype.funct3) { // What do we switch on?
         /* YOUR CODE HERE */
-    case 0x0:
+    case 0x00:
       processor->R[rd] = load(memory, processor->R[rs1] + bitSigner(instruction.itype.imm, 12), LENGTH_BYTE, 0);
       break;
-    case 0x1:
+    case 0x01:
       processor->R[rd] = load(memory, processor->R[rs1] + bitSigner(imm, 12), LENGTH_HALF_WORD, 0);
       break;
-    case 0x2:
+    case 0x02:
       processor->R[rd] = load(memory, processor->R[rs1] + bitSigner(imm, 12), LENGTH_WORD, 0);
       break;
     default:
@@ -355,13 +355,13 @@ void execute_store(Instruction instruction, Processor *processor, Byte *memory) 
 
   switch(function3) {
         /* YOUR CODE HERE */
-    case 0x0:
+    case 0x00:
       store(memory, processor->R[rs1] + get_store_offset(instruction), LENGTH_BYTE, processor->R[rs2], 0);
       break;
-    case 0x1:
+    case 0x01:
       store(memory, processor->R[rs1] + get_store_offset(instruction), LENGTH_HALF_WORD, processor->R[rs2], 0);
       break;
-    case 0x2:
+    case 0x02:
       store(memory, processor->R[rs1] + get_store_offset(instruction), LENGTH_WORD, processor->R[rs2], 0);
       break;
     default:
