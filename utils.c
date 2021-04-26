@@ -16,21 +16,21 @@ int bitSigner(unsigned int field, unsigned int size) {
 
 int get_branch_offset(Instruction instruction) {
   /* YOUR CODE HERE */
-  unsigned int eleventh = instruction.sbtype.imm5 << 31 >> 31 << 11;
-  unsigned int twelth = instruction.sbtype.imm7 << 25 >> 31 << 12;
-  unsigned int onetofour = instruction.sbtype.imm5 >> 1 << 1;
-  unsigned int fivetoten = instruction.sbtype.imm7 << 26 >> 26 << 5;
-  unsigned int immediate = (twelth | eleventh | fivetoten | onetofour);
+  unsigned int once = instruction.sbtype.imm5 << 31 >> 31 << 11;
+  unsigned int doce = instruction.sbtype.imm7 << 25 >> 31 << 12;
+  unsigned int unoalcuatro = instruction.sbtype.imm5 >> 1 << 1;
+  unsigned int cincoaldiez = instruction.sbtype.imm7 << 26 >> 26 << 5;
+  unsigned int immediate = (doce | once | cincoaldiez | unoalcuatro);
   return immediate;
 }
 
 int get_jump_offset(Instruction instruction) {
   /* YOUR CODE HERE */
-  unsigned int twenty = instruction.ujtype.imm << 12 >> 31 << 20;
-  unsigned int onetoten = instruction.ujtype.imm >> 9 << 21 >> 21 << 1;
-  unsigned int eleven = instruction.ujtype.imm << 23 >> 31 << 11;
-  unsigned int twelvetonineteen = instruction.ujtype.imm << 24 >> 24 << 12;
-  unsigned int immediate = (twenty | twelvetonineteen | eleven | onetoten);;
+  unsigned int veinte = instruction.ujtype.imm << 12 >> 31 << 20;
+  unsigned int unoaldiez = instruction.ujtype.imm >> 9 << 21 >> 21 << 1;
+  unsigned int once = instruction.ujtype.imm << 23 >> 31 << 11;
+  unsigned int docealdnueve = instruction.ujtype.imm << 24 >> 24 << 12;
+  unsigned int immediate = (veinte | docealdnueve | once1 | unoaldiez);;
   return immediate;
 }
 
