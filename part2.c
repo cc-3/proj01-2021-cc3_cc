@@ -278,11 +278,11 @@ void execute_itype_except_load(Instruction instruction, Processor *processor) {
 
 void execute_ecall(Processor *p, Byte *memory) {
   switch(p->R[10]) { // What do we switch on?
-    case 1:
+    case 0x01:
       printf("%d", p->R[11]);
       break;
 
-    case 10:
+    case 0x0a:
       printf("exiting the simulator\n");
       exit(0);
       break;
