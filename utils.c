@@ -28,7 +28,7 @@ int get_jump_offset(Instruction instruction) {
   /* YOUR CODE HERE */
   unsigned int veinte = instruction.ujtype.imm << 12 >> 31 << 20;
   unsigned int unoaldiez = instruction.ujtype.imm >> 9 << 21 >> 21 << 1;
-  unsigned int once = instruction.ujtype.imm << 23 >> 31 << 11;
+  unsigned int once1 = instruction.ujtype.imm << 23 >> 31 << 11;
   unsigned int docealdnueve = instruction.ujtype.imm << 24 >> 24 << 12;
   unsigned int immediate = (veinte | docealdnueve | once1 | unoaldiez);;
   return immediate;

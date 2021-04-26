@@ -27,23 +27,23 @@ void execute_instruction(Instruction instruction,Processor *processor,Byte *memo
       /* YOUR CODE HERE */
       case 0x33:
           execute_rtype(instruction, processor);
-          processor->PC += 4;
+
           break;
       case 0x03:
           execute_load(instruction, processor, memory);
-          processor->PC += 4;
+
           break;
       case 0x13:
           execute_itype_except_load(instruction, processor);
-          processor->PC += 4;
+
           break;
       case 0x73:
           execute_ecall(processor, memory);
-          processor->PC += 4;
+
           break;        
       case 0x23:
           execute_store(instruction, processor, memory);
-          processor->PC += 4;
+
           break;
       case 0x63:
           execute_branch(instruction, processor);
@@ -56,7 +56,6 @@ void execute_instruction(Instruction instruction,Processor *processor,Byte *memo
           break;
       case 0x37:
           execute_lui(instruction, processor);
-          processor->PC += 4;
           break;
       case 0x6f:
           execute_jal(instruction, processor);
