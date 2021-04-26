@@ -243,7 +243,8 @@ void write_branch(Instruction instruction) {
 
 void write_auipc(Instruction instruction) {
   /* YOUR CODE HERE */        //FALTA ESTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-  printf(AUIPC_FORMAT, instruction.utype.rd, get_jump_offset(instruction));
+  int imm = bitSigner(instruction.utype.imm, 20);
+  printf(AUIPC_FORMAT, instruction.utype.rd, );
 }
 
 void write_lui(Instruction instruction) {
