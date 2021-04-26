@@ -22,7 +22,6 @@ void write_ecall(Instruction);
 
 void decode_instruction(Instruction instruction) {
   /* YOUR CODE HERE: COMPLETE THE SWITCH STATEMENTS */
-
   unsigned int opcode = instruction.opcode;
     switch(opcode) {
         case 0x33:
@@ -43,13 +42,19 @@ void decode_instruction(Instruction instruction) {
         case 0x63:
             write_branch(instruction);
             break;
+        case 0x17:
+            write_auipc(instruction);
+            break;
+        case 0x67:
+            write_jalr(instruction);
+            break;
         case 0x37:
             write_lui(instruction);
             break;
-        case 0x6f:
+        case 0x6F:
             write_jal(instruction);
             break;
-    default: // undefined opcode
+        default: // undefined opcode
             handle_invalid_instruction(instruction);
         break;
     }
@@ -57,12 +62,12 @@ void decode_instruction(Instruction instruction) {
 
 void write_rtype(Instruction instruction) {
 
-
+    unsigned int function3 = instruction.rtype.funct3;
     unsigned int function7 = instruction.rtype.funct7;
 
-    switch(function7) { // What do we switch on?
+    switch(function3) { // What do we switch on?
     /* YOUR CODE HERE */
-        case 0x00:
+        case 0x0:
             switch(function7) {
                 case 0x00:
                     print_rtype("add", instruction);
@@ -78,7 +83,7 @@ void write_rtype(Instruction instruction) {
                     break;        
             }
             break;
-        case 0x01:
+        case 0x1:
             switch(function7) {
                 case 0x00:
                     print_rtype("sll", instruction);
@@ -92,11 +97,17 @@ void write_rtype(Instruction instruction) {
             }
             break;
 
-        case 0x02:
-            print_rtype("slt", instruction);
-            break;
+        case 0x2:
+            if(function7 == 0x00){
+                print_rtype("slt", instruction);
+                break;
+            }else{
+                handle_invalid_instruction(instruction);
+                break;  
+            }
+            
 
-        case 0x04:
+        case 0x4:
             switch(function7) {
                 case 0x00:
                     print_rtype("xor", instruction);
@@ -110,7 +121,7 @@ void write_rtype(Instruction instruction) {
             }
             break;
 
-        case 0x05:
+        case 0x5:
             switch(function7) {
                 case 0x00:
                     print_rtype("srl", instruction);
@@ -124,7 +135,7 @@ void write_rtype(Instruction instruction) {
             }
             break;
 
-        case 0x06:
+        case 0x6:
             switch(function7) {
                 case 0x00:
                     print_rtype("or", instruction);
@@ -138,9 +149,14 @@ void write_rtype(Instruction instruction) {
             }
             break;
 
-        case 0x07:
-            print_rtype("and", instruction);
-            break;    
+        case 0x7:
+            if(function7 == 0x00){
+                print_rtype("and", instruction);
+                break;   
+            }else{
+                handle_invalid_instruction(instruction);
+                break;
+            }
 	    default:
             handle_invalid_instruction(instruction);
             break;
@@ -148,22 +164,22 @@ void write_rtype(Instruction instruction) {
 }
 
 void write_itype_except_load(Instruction instruction) {
-
-    switch(instruction.itype.funct3) { // What do we switch on?
+    unsigned int funct3 = instruction.itype.funct3;
+    switch(funct3) { // What do we switch on?
         /* YOUR CODE HERE */
-        case 0x00:
+        case 0x0:
             print_itype_except_load("addi", instruction, instruction.itype.imm);
             break;
-        case 0x01:
+        case 0x1:
             print_itype_except_load("slli", instruction, instruction.itype.imm);
             break;
-        case 0x02:
+        case 0x2:
             print_itype_except_load("slti", instruction, instruction.itype.imm);
             break;
-        case 0x04:
+        case 0x4:
             print_itype_except_load("xori", instruction, instruction.itype.imm);
             break;
-        case 0x05:
+        case 0x5:
             switch(instruction.itype.imm >> 5) {
                 case 0x00:
                     print_itype_except_load("srli", instruction, instruction.itype.imm);
@@ -176,10 +192,10 @@ void write_itype_except_load(Instruction instruction) {
                     break;         
             }
             break;
-        case 0x06:
+        case 0x6:
             print_itype_except_load("ori", instruction, instruction.itype.imm);
             break;
-        case 0x07:
+        case 0x7:
             print_itype_except_load("andi", instruction, instruction.itype.imm);
             break;                       
         default:
@@ -192,13 +208,13 @@ void write_load(Instruction instruction) {
 
     switch(instruction.itype.funct3) { // What do we switch on?
         /* YOUR CODE HERE */
-        case 0x00:
+        case 0x0:
             print_load("lb", instruction);
             break;
-        case 0x01:
+        case 0x1:
             print_load("lh", instruction);
             break;
-        case 0x02:
+        case 0x2:
             print_load("lw", instruction);
             break;
         default:
@@ -210,13 +226,13 @@ void write_load(Instruction instruction) {
 void write_store(Instruction instruction) {
     switch(instruction.stype.funct3) { // What do we switch on?
         /* YOUR CODE HERE */
-        case 0x00:
+        case 0x0:
             print_store("sb", instruction);
             break;
-        case 0x01:
+        case 0x1:
             print_store("sh", instruction);
             break;
-        case 0x02:
+        case 0x2:
             print_store("sw", instruction);
             break;        
         default:
@@ -231,7 +247,7 @@ void write_branch(Instruction instruction) {
         case 0x0:
             print_branch("beq", instruction);
             break;
-        case 0x01:
+        case 0x1:
             print_branch("bne", instruction);
             break;    
         default:
@@ -244,8 +260,7 @@ void write_branch(Instruction instruction) {
 
 void write_auipc(Instruction instruction) {
   /* YOUR CODE HERE */        //FALTA ESTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-  int imm = bitSigner(instruction.utype.imm, 20);
-  printf(AUIPC_FORMAT, instruction.utype.rd, imm);
+  printf(AUIPC_FORMAT, instruction.utype.rd,instruction.utype.imm);
 }
 
 void write_lui(Instruction instruction) {
@@ -255,8 +270,11 @@ void write_lui(Instruction instruction) {
 
 void write_jalr(Instruction instruction) {
   /* YOUR CODE HERE */       //FALTA ESTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
- 
-  printf(JALR_FORMAT, instruction.itype.rd, instruction.itype.rs1, bitSigner(instruction.itype.imm, 12));
+    if(instruction.itype.funct3 == 0x0){
+        printf(JALR_FORMAT, instruction.itype.rd, instruction.itype.rs1,instruction.itype.imm);
+    }else{
+        handle_invalid_instruction(instruction);
+    }
 }
 
 void write_jal(Instruction instruction) {
@@ -266,7 +284,12 @@ void write_jal(Instruction instruction) {
 
 void write_ecall(Instruction instruction) {
   /* YOUR CODE HERE */
-  printf(ECALL_FORMAT);
+    if(instruction.itype.funct3 == 0x0 && instruction.itype.imm == 0x000){
+        printf(ECALL_FORMAT);
+    }else{
+        handle_invalid_instruction(instruction);
+    }
+  
 }
 
 void print_rtype(char *name, Instruction instruction) {
