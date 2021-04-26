@@ -395,7 +395,7 @@ void execute_jal(Instruction instruction, Processor *processor) {
 void execute_auipc(Instruction instruction, Processor *processor) {
   /* YOUR CODE HERE */
   unsigned int rd = instruction.ujtype.rd;
-  int imm = bitSigner(instruction.utype.imm, 32) << 12;
+  int imm = bitSigner(instruction.utype.imm, 20);
   processor->R[rd] = processor->PC + imm;
 }
 
