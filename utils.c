@@ -9,7 +9,7 @@ int bitSigner(unsigned int field, unsigned int size) {
   if ((field >> (size - 1)) == 1) {
         return (int)((field << (32-size) >> (32-size)) | (0xFFFFFFFF << size));
     }
-  return (int)(field << (32-size) >> (32-size));;
+  return (int)(field << (32-size) >> (32-size));
 }
 
 /* Remember that the offsets should return the offset in BYTES */
