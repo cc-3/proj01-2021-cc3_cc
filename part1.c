@@ -23,43 +23,44 @@ void write_ecall(Instruction);
 void decode_instruction(Instruction instruction) {
   /* YOUR CODE HERE: COMPLETE THE SWITCH STATEMENTS */
 
-  unsigned int opcode = instruction.opcode
-
-          case 0x33:
-              write_rtype(instruction);
-              break;
-          case 0x03:
-              write_load(instruction);
-              break;
-          case 0x13:
-              write_itype_except_load(instruction);
-              break;
-          case 0x73:
-              write_ecall(instruction);
-              break;        
-          case 0x23:
-              write_store(instruction);
-              break;
-          case 0x63:
-              write_branch(instruction);
-              break;
-          case 0x37:
-              write_lui(instruction);
-              break;
-          case 0x6f:
-              write_jal(instruction);
-              break;
-        default: // undefined opcode
-              handle_invalid_instruction(instruction);
+  unsigned int opcode = instruction.opcode;
+    switch(opcode) {
+        case 0x33:
+            write_rtype(instruction);
             break;
+        case 0x03:
+            write_load(instruction);
+            break;
+        case 0x13:
+            write_itype_except_load(instruction);
+            break;
+        case 0x73:
+            write_ecall(instruction);
+            break;        
+        case 0x23:
+            write_store(instruction);
+            break;
+        case 0x63:
+            write_branch(instruction);
+            break;
+        case 0x37:
+            write_lui(instruction);
+            break;
+        case 0x6f:
+            write_jal(instruction);
+            break;
+    default: // undefined opcode
+            handle_invalid_instruction(instruction);
+        break;
     }
+}
 
 void write_rtype(Instruction instruction) {
 
 
-  unsigned int function7 = instruction.rtype.funct7;
+    unsigned int function7 = instruction.rtype.funct7;
 
-  switch(function7) { // What do we switch on?
+    switch(function7) { // What do we switch on?
     /* YOUR CODE HERE */
         case 0x00:
             switch(function7) {
@@ -143,7 +144,7 @@ void write_rtype(Instruction instruction) {
 	    default:
             handle_invalid_instruction(instruction);
             break;
-	      }https://github.com/cc-3/proj01-2021-cc3_cc.git
+	}
 }
 
 void write_itype_except_load(Instruction instruction) {
@@ -244,7 +245,7 @@ void write_branch(Instruction instruction) {
 void write_auipc(Instruction instruction) {
   /* YOUR CODE HERE */        //FALTA ESTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   int imm = bitSigner(instruction.utype.imm, 20);
-  printf(AUIPC_FORMAT, instruction.utype.rd, );
+  printf(AUIPC_FORMAT, instruction.utype.rd, imm);
 }
 
 void write_lui(Instruction instruction) {
@@ -254,8 +255,8 @@ void write_lui(Instruction instruction) {
 
 void write_jalr(Instruction instruction) {
   /* YOUR CODE HERE */       //FALTA ESTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-  int imm = bitSigner(instruction.itype.imm, 12)
-  printf(JALR_FORMAT, instruction.itype.rd, instruction.itype.rs1, imm);
+ 
+  printf(JALR_FORMAT, instruction.itype.rd, instruction.itype.rs1, bitSigner(instruction.itype.imm, 12));
 }
 
 void write_jal(Instruction instruction) {
@@ -300,6 +301,5 @@ void print_store(char *name, Instruction instruction) {
 
 void print_branch(char *name, Instruction instruction) {
   /* YOUR CODE HERE */
-    printf(BRANCH_FORMAT,
-        name, instruction.sbtype.rs1, instruction.sbtype.rs2, get_branch_offset(instruction));
+    printf(BRANCH_FORMAT, name, instruction.sbtype.rs1, instruction.sbtype.rs2, get_branch_offset(instruction));
 }
