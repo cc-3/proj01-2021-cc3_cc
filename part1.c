@@ -3,7 +3,6 @@
 #include "types.h"
 #include "utils.h"
 
-
 // forward declarations
 void print_rtype(char *, Instruction);
 void print_itype_except_load(char *, Instruction, int);
@@ -20,7 +19,6 @@ void write_lui(Instruction);
 void write_jalr(Instruction);
 void write_jal(Instruction);
 void write_ecall(Instruction);
-
 
 void decode_instruction(Instruction instruction) {
   /* YOUR CODE HERE: COMPLETE THE SWITCH STATEMENTS */
@@ -55,10 +53,6 @@ void decode_instruction(Instruction instruction) {
               handle_invalid_instruction(instruction);
             break;
     }
-}
-
-
-
 
 void write_rtype(Instruction instruction) {
 
@@ -151,7 +145,6 @@ void write_rtype(Instruction instruction) {
 	      }
 }
 
-
 void write_itype_except_load(Instruction instruction) {
 
     switch(instruction.itype.funct3) { // What do we switch on?
@@ -193,7 +186,6 @@ void write_itype_except_load(Instruction instruction) {
     }
 }
 
-
 void write_load(Instruction instruction) {
 
     switch(instruction.itype.funct3) { // What do we switch on?
@@ -212,7 +204,6 @@ void write_load(Instruction instruction) {
             break;
     }
 }
-
 
 void write_store(Instruction instruction) {
     switch(instruction.stype.funct3) { // What do we switch on?
@@ -247,36 +238,33 @@ void write_branch(Instruction instruction) {
     }
 }
 
-
 /* For the writes, probably a good idea to take a look at utils.h */
 
 void write_auipc(Instruction instruction) {
   /* YOUR CODE HERE */        //FALTA ESTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  printf(AUIPC_FORMAT, instruction.utype.rd, get_jump_offset(instruction));
 }
-
 
 void write_lui(Instruction instruction) {
   /* YOUR CODE HERE */
   printf(LUI_FORMAT, instruction.utype.rd, instruction.utype.imm);
 }
 
-
 void write_jalr(Instruction instruction) {
   /* YOUR CODE HERE */       //FALTA ESTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  int imm = bitSigner(instruction.itype.imm, 12)
+  printf(JALR_FORMAT, instruction.itype.rd, instruction.itype.rs1, imm);
 }
-
 
 void write_jal(Instruction instruction) {
   /* YOUR CODE HERE */
   printf(JAL_FORMAT, instruction.ujtype.rd, get_jump_offset(instruction));
 }
 
-
 void write_ecall(Instruction instruction) {
   /* YOUR CODE HERE */
   printf(ECALL_FORMAT);
 }
-
 
 void print_rtype(char *name, Instruction instruction) {
   /* YOUR CODE HERE */
@@ -284,11 +272,10 @@ void print_rtype(char *name, Instruction instruction) {
   unsigned int rd = instruction.rtype.rd; //obtemenos rd
   unsigned int rs1 = instruction.rtype.rs1; // obtenemos rs1
   unsigned int rs2 = instruction.rtype.rs2; // obtenemos rs2
-  printf(RTYPE_FORMAT , name , rd , rs1 , rs2); // Hacemos el print de la instruccion
+  printf(RTYPE_FORMAT, name, rd, rs1, rs2); // Hacemos el print de la instruccion
 
 
 }
-
 
 void print_itype_except_load(char *name, Instruction instruction, int imm) {
   /* YOUR CODE HERE */
@@ -297,20 +284,17 @@ void print_itype_except_load(char *name, Instruction instruction, int imm) {
 
 }
 
-
 void print_load(char *name, Instruction instruction) {
   /* YOUR CODE HERE */
   printf(MEM_FORMAT,
       name, instruction.itype.rd, instruction.itype.imm, instruction.itype.rs1);
 }
 
-
 void print_store(char *name, Instruction instruction) {
   /* YOUR CODE HERE */
   printf(MEM_FORMAT, 
       name, instruction.stype.rs2, get_store_offset(instruction), instruction.stype.rs1);
 }
-
 
 void print_branch(char *name, Instruction instruction) {
   /* YOUR CODE HERE */
